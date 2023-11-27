@@ -1,0 +1,30 @@
+@import "~bootstrap/scss/bootstrap";
+
+:root {
+    --background: #1A1A1D;
+    --color-primary: #6F2232;
+    --color-secondary: #950740;
+    --color-text: #fff;
+
+}
+
+
+body {
+    background-color: var(--background);  
+}
+
+body * {
+    color: var(--color-text)
+}
+
+.navbar-link {
+    color: var(--color-text);
+}
+
+.navbar-link:hover {
+    color: var(--color-primary);
+}
+
+button.btn-navbar-burger {
+    background-color: var(--color-text);
+}
