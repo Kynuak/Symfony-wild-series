@@ -26,6 +26,10 @@ class ProgramFixtures extends Fixture
             'synopsis' => 'Un frère et une soeur se retrouve dans un monde parallèle où la lois c\'est les jeux.',
             'category' => 'category_Fantasy',
         ],
+        'Sword Art Online' => [
+            'synopsis' => 'Kirito, un gamer se retrouver coincé dans le nouveau jeu vidéo Sword Art Online, s\il meurt dans le jeu, il meurt dans la vie réelle.',
+            'category' => 'category_Fantasy',
+        ],
         'Arcane' => [
             'synopsis' => 'Championnes de leurs villes jumelles et rivales (la huppée Piltover et la sous-terraine Zaun), deux sœurs Vi et Powder se battent dans une guerre',
             'category' => 'category_Animation',
@@ -34,11 +38,6 @@ class ProgramFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        // $program = new Program();
-        // $program->setTitle('Walking Dead');
-        // $program->setSynopsis('Un virus transforme des gens en zombie');
-        // $program->setCategory($this->getReference('category_Horreur'));
-        // $manager->persist($program);
         foreach(self::PROGRAM as $titleSerie => $content) {
             $program = new Program();
             $program->setTitle($titleSerie);
