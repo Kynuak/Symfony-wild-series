@@ -2,30 +2,24 @@
 
 namespace App\DataFixtures;
 
+use Faker\Factory;
 use App\Entity\Category;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 
 class CategoryFixtures extends Fixture
 {
 
-    const CATEGORIES = [
-        'Action',
-        'Aventure',
-        'Animation',
-        'Fantastique',
-        'Horreur',
-        'Fantasy',
-        'Science-fiction',
-    ];
-
     public function load(ObjectManager $manager)
     {
-        foreach(self::CATEGORIES as $categoryName) {
+
+        $faker = Factory::create();
+
+        for($i = 0; $i < 15; $i++) {
             $category = new Category();
-            $category->setName($categoryName);
+            $category->setName($faker->sentence());
+            $this->addReference('category_' . $i, $category);
             $manager->persist($category);
-            $this->addReference('category_' . $categoryName, $category);
         }
 
         $manager->flush();

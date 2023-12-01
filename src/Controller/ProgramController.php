@@ -38,8 +38,7 @@ class ProgramController extends AbstractController
     {
         $program = $programRepository->find($programID);
         $season = $seasonRepository->find($seasonID);
-        $episodes = $season->getEpisodes();
 
-        return $this->render('program/season_show.html.twig', ['season' => $season, "program" => $program, "episodes" => $episodes]);
+        return $this->render('program/season_show.html.twig', ['season' => $season, "program" => $program]);
     }
 }

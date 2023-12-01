@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use Faker\Factory;
 use App\Entity\Episode;
 use App\DataFixtures\SeasonFixtures;
 use Doctrine\Persistence\ObjectManager;
@@ -11,41 +12,25 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 class EpisodeFixtures extends Fixture implements DependentFixtureInterface
 {   
-    const EPISODES = [
-        'season1_Walking-Dead' => [
-          1 => 'Le Commencement',
-          2 => 'Le Decouragement',
-          3 => 'Le Final',
-        ],
-        'season2_Walking-Dead' => [
-          1 => 'Le coucou',
-          2 => 'Le coco',
-          3 => 'Le caca',
-        ],
-      ];
 
     public function load(ObjectManager $manager): void
     {
 
-        foreach(self::EPISODES as $season => $arrayEpisodes) {
+        $faker = Factory::create();
 
-            foreach($arrayEpisodes as $nbEpisode => $episodeTitle) {
+
+            for($i = 0; $i < 5000; $i++) {
+
                 $episode = new Episode();
-                $episode->setSeason($this->getReference($season));
-                $episode->setTitle($episodeTitle);
-                $episode->setNumber($nbEpisode);
+                $episode->setSeason($this->getReference('season_'.rand(0, 499)));
+                $episode->setTitle($faker->sentence());
+                $episode->setSynopsis($faker->paragraph(3, true));
+                $episode->setNumber($faker->numberBetween(1, 20));
                 
                 $manager->persist($episode);
-            }
-        }
             
-        // $episode = new Episode();
-        // $episode->setTitle(self::EPISODES['season1_Walking-Dead']['title']);
-        // $episode->setSeason($this->getReference('season1_Walking-Dead'));
-        // $episode->setNumber(self::EPISODES['season1_Walking-Dead']['nbEpisode']);
-        // $manager->persist($episode);
-
-
+            }
+        
         $manager->flush();
     }
 
