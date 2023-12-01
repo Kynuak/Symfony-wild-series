@@ -23,7 +23,7 @@ class CategoryController extends AbstractController
     {
 
         $categoryID = $categoryRepository->findOneBy(['name' => $categoryName]);
-
+        dump($categoryID);
         if(!$categoryID) {
             throw $this->createNotFoundException(
                 'Aucune catégorie nommée ' . $categoryName
@@ -34,7 +34,7 @@ class CategoryController extends AbstractController
                 ['id' => 'DESC']
             );
         }
-
+        dump($programs);
         return $this->render("Category/show.html.twig", ['programs' => $programs, "categoryName" => $categoryName]);
     }
 

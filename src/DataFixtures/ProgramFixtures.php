@@ -3,11 +3,13 @@
 namespace App\DataFixtures;
 
 use App\Entity\Program;
+use App\DataFixtures\CategoryFixtures;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 ;
 
-class ProgramFixtures extends Fixture
+class ProgramFixtures extends Fixture implements DependentFixtureInterface
 {
     const PROGRAM = [
         'Walking Dead' => [
@@ -43,7 +45,10 @@ class ProgramFixtures extends Fixture
             $program->setTitle($titleSerie);
             $program->setSynopsis($content['synopsis']);
             $program->setCategory($this->getReference($content['category']));
+            $titleSerie = str_replace(" ", "-", $titleSerie);
+            $this->addReference('program_' . $titleSerie, $program);
             $manager->persist($program);
+           
         }
 
         $manager->flush();
