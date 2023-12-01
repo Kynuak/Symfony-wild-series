@@ -23,7 +23,6 @@ class CategoryController extends AbstractController
     {
 
         $categoryID = $categoryRepository->findOneBy(['name' => $categoryName]);
-        dump($categoryID);
         if(!$categoryID) {
             throw $this->createNotFoundException(
                 'Aucune catégorie nommée ' . $categoryName
