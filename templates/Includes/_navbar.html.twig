@@ -18,6 +18,16 @@
         <li class="nav-item">
           <a class="navbar-link nav-link" href="">Login</a>
         </li>
+        <li class="dropdown">
+          Mouse over me
+          <div class="dropdown-content">
+          <ul>
+            {% for category in categoriesGlobals.getCategories %}
+              <li><a href="{{ path('category_show', {'categoryName': category.name}) }}">{{category.name}}</a></li>
+            {% endfor %}
+          </ul>
+          </div>
+        </li>
       </ul>
     </div>
   </div>
