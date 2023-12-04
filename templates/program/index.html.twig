@@ -5,6 +5,7 @@
 {% block body %}
     <h1 class="title-page">Toutes nos séries </h1>
     <a href="{{ path('program_new') }}">Ajouter une nouvelle série</a>
+    {{ app.session.get('total') }}
     <section class="program">
         {% for program in programs %}
 

@@ -13,13 +13,22 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 #[Route('/program', name:'program_')]
 class ProgramController extends AbstractController
 {
     #[Route('/', name: 'index')]
-    public function index(ProgramRepository $programRepository): Response
+    public function index(ProgramRepository $programRepository, RequestStack $requestStack): Response
     {
+        $session = $requestStack->getSession();
+        if(!$session->has('total')) {
+            $session->set('total', 0);
+        }
+
+        $total = $session->get('total');
+
         $programs = $programRepository->findAll();
         return $this->render('program/index.html.twig', ['programs' => $programs]);
     }
@@ -34,9 +43,13 @@ class ProgramController extends AbstractController
         $form = $this->createForm(ProgramType::class, $program);
         $form->handleRequest($request);
 
-        if($form->isSubmitted()) {
+        if($form->isSubmitted() && $form->isValid()) {
             $entityManagerInterface->persist($program);
             $entityManagerInterface->flush();
+
+            $this->addFlash('success', 'The new program has been created');
+
+            return $this->redirectToRoute('program_index');
         }
 
 

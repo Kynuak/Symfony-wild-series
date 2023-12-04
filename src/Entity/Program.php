@@ -2,24 +2,42 @@
 
 namespace App\Entity;
 
+use Symfony\Component\Validator\Constraints as Assert;
 use App\Repository\ProgramRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: ProgramRepository::class)]
+#[UniqueEntity(
+    fields: ['title'],
+    message: 'Ce nom de série existe déjà !',
+)]
 class Program
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
-
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank(message : 'Ce champ ne doit pas être vide')]
+    #[Assert\Length(
+        max: 255,
+        maxMessage: 'Le champ est trop grand et doit faire moins de {{ value }}'
+    )]
+    
     private ?string $title = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotBlank(message: 'Ce champ ne doit pas être vide')]
+    #[Assert\Regex(
+        pattern: '/plus belle la vie/i',
+        htmlPattern: 'plus belle la vie',
+        match : false,
+        message: 'On parle de vrai séries ici !'
+    )]
     private ?string $synopsis = null;
 
     #[ORM\Column(length: 255, nullable: true)]
