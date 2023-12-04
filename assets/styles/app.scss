@@ -1,3 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz@6..12&display=swap');
+
+@import url('Components/_navbar_style.scss');
+@import url('Components/_form_style.scss');
+
+@import url('Category/category_style.scss');
+
+@import url('program_style.scss');
+
+
 :root {
     --background: #1A1A1D;
     --color-primary: #6F2232;
@@ -6,42 +16,32 @@
 
 }
 
+* {
+    color: var(--color-text);
+    padding: 0;
+    margin: 0;
+    font-family: 'Nunito Sans', sans-serif;
+}
 
 body {
-    background-color: var(--background);  
+    background-color: var(--background);
+    display: grid;
+    grid-template-rows: auto 1fr auto;
 }
 
-body * {
-    color: var(--color-text)
+
+
+a {
+    text-decoration: none;
 }
 
-.navbar-link {
-    color: var(--color-text);
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 2rem 0;
 }
 
-.navbar-link:hover {
-    color: var(--color-primary);
-}
-
-button.btn-navbar-burger {
-    background-color: var(--color-text);
-}
-
-.dropdown {
-    position: relative;
-    display: inline-block;
-}
-
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #8d2727;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    padding: 12px 16px;
-    z-index: 1;
-}
-
-.dropdown:hover .dropdown-content {
-    display: block;
+input, option, textarea, select {
+    color: black;
 }

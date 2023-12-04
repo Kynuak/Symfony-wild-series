@@ -16,8 +16,10 @@
         <header>
             {% include 'Includes/_navbar.html.twig' %}
         </header>
+        <main>
+            {% block body %}{% endblock %}
+        </main>
         
-        {% block body %}{% endblock %}
         
     </body>
 </html>
