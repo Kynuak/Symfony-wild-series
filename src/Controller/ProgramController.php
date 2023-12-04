@@ -35,7 +35,7 @@ class ProgramController extends AbstractController
         return $this->render('program/show.html.twig', ['program' => $program]);
     }
 
-    #[Route('/{programID}/season/{seasonID}', methods: ["GET"], requirements:['programID' => '\d+', 'seasonID' => '\d+'], name: 'season_show' )]
+    #[Route('/{programID}/season/{seasonID}', methods: ["GET"], requirements:['programID' => '\d+', 'seasonID' => '\d+'], name: 'season_show' )]        
     public function showSeason(
         #[MapEntity(mapping: ['programID' => "id"])] Program $program,
         #[MapEntity(mapping: ['seasonID' => "id"])] Season $season
