@@ -28,7 +28,7 @@ class Program
     #[ORM\ManyToOne (inversedBy: 'programs')]
     private ?Category $category = null;
 
-    #[ORM\OneToMany(mappedBy: 'Program', targetEntity: Season::class)]
+    #[ORM\OneToMany(mappedBy: 'program', targetEntity: Season::class)]
     private Collection $seasons;
 
     public function __construct()
