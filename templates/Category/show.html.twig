@@ -13,7 +13,7 @@
                 <div class="cards_body">
                     <h3>{{ program.synopsis }}</h3>
                 </div>
-                <div><a href="{{ path('program_show', { programID: program.id}) }}">Voir plus de détails</a></div>
+                <div><a href="{{ path('program_show', { programSlug: program.slug}) }}">Voir plus de détails</a></div>
             </article>
         {% else %}
             <h3>Aucune série existante pour cette categorie !</h3>

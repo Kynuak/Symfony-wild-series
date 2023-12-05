@@ -7,6 +7,7 @@ use App\Entity\Season;
 use App\Entity\Program;
 use App\Form\ProgramType;
 use App\Repository\ProgramRepository;
+use App\Service\ProgramDuration;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,6 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[Route('/program', name:'program_')]
 class ProgramController extends AbstractController
@@ -35,7 +37,11 @@ class ProgramController extends AbstractController
 
 
     #[Route('/new', name: 'new')]
-    public function new(Request $request, EntityManagerInterface $entityManagerInterface): Response
+    public function new(
+        Request $request, 
+        EntityManagerInterface $entityManagerInterface,
+        SluggerInterface $slugger
+    ): Response
     {
 
         $program = new Program();
@@ -44,6 +50,8 @@ class ProgramController extends AbstractController
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
+            $slug = $slugger->slug($program->getTitle());
+            $program->setSlug($slug);
             $entityManagerInterface->persist($program);
             $entityManagerInterface->flush();
 
@@ -57,34 +65,38 @@ class ProgramController extends AbstractController
     }
 
 
-    #[Route('/{programID}', methods: ["GET"], requirements:['programID' => '\d+'], name: 'show' )]
+    #[Route('/{programSlug}', methods: ["GET"], name: 'show' )]
     public function show(
-        #[MapEntity(mapping: ['programID' => 'id'])] Program $program
+        #[MapEntity(mapping: ['programSlug' => 'slug'])] Program $program,
+        ProgramDuration $programDuration
     ): Response
     {
         if(!$program) {
             throw $this->createNotFoundException(
-                'No program with id : ' . $program->getID() . 'found in program\'s table'
+                'No program with id : ' . $program->getSlug() . 'found in program\'s table'
             );
         }
 
-        return $this->render('program/show.html.twig', ['program' => $program]);
+        return $this->render('program/show.html.twig', [
+            'program' => $program,
+            'programDuration' => $programDuration->calculate($program)
+        ]);
     }
 
-    #[Route('/{programID}/season/{seasonID}', methods: ["GET"], requirements:['programID' => '\d+', 'seasonID' => '\d+'], name: 'season_show' )]        
+    #[Route('/{programSlug}/season/{seasonID}', methods: ["GET"], requirements:['seasonID' => '\d+'], name: 'season_show' )]        
     public function showSeason(
-        #[MapEntity(mapping: ['programID' => "id"])] Program $program,
+        #[MapEntity(mapping: ['programSlug' => "slug"])] Program $program,
         #[MapEntity(mapping: ['seasonID' => "id"])] Season $season
     ): Response
     {
         return $this->render('program/season_show.html.twig', ['season' => $season, "program" => $program]);
     }
 
-    #[Route('/{programID}/season/{seasonID}/episode/{episodeID}', methods: ["GET"], requirements:['programID' => '\d+', 'seasonID' => '\d+', 'episodeID' => '\d+'], name: 'episode_show' )]
+    #[Route('/{programSlug}/season/{seasonID}/episode/{episodeSlug}', methods: ["GET"], requirements:['seasonID' => '\d+'], name: 'episode_show' )]
     public function showEpisode(
-        #[MapEntity(mapping: ['programID' => "id"])] Program $program,
+        #[MapEntity(mapping: ['programSlug' => "slug"])] Program $program,
         #[MapEntity(mapping: ['seasonID' => "id"])] Season $season,
-        #[MapEntity(mapping: ['episodeID' => "id"])] Episode $episode
+        #[MapEntity(mapping: ['episodeSlug' => "slug"])] Episode $episode
     ): Response
     {
         return $this->render('program/episode_show.html.twig', ['season' => $season, "program" => $program, "episode" => $episode]);
