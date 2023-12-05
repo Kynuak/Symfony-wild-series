@@ -15,7 +15,10 @@ class SeasonType extends AbstractType
             ->add('number')
             ->add('year')
             ->add('description')
-            ->add('program', null, ['choice_label' => 'title'])
+            ->add('program', null, [
+                'class' => Season::class, 
+                'choice_label' => 'title'
+            ])
         ;
     }
 
