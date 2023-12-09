@@ -10,12 +10,13 @@ use App\Repository\ProgramRepository;
 use App\Service\ProgramDuration;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[Route('/program', name:'program_')]
@@ -40,7 +41,8 @@ class ProgramController extends AbstractController
     public function new(
         Request $request, 
         EntityManagerInterface $entityManagerInterface,
-        SluggerInterface $slugger
+        SluggerInterface $slugger,
+        MailerInterface $mailer,
     ): Response
     {
 
@@ -56,6 +58,15 @@ class ProgramController extends AbstractController
             $entityManagerInterface->flush();
 
             $this->addFlash('success', 'The new program has been created');
+
+            $email = (new Email())
+                    ->from($this->getParameter('mailer_from'))
+                    ->to('aee53c68ef-307150@inbox.mailtrap.io')
+                    ->subject('Une nouvelle série à été publié !')
+                    ->html($this->renderView('program/newProgramEmail.html.twig', ['program' => $program]));
+            $mailer->send($email);
+
+
 
             return $this->redirectToRoute('program_index');
         }
