@@ -1,0 +1,24 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    
+    <section class="new-program">
+
+        {{ form_start(form) }}
+            <div class="">
+                {{ form_errors(form) }}
+            </div>
+
+            {{ form_widget(form) }}
+
+            <div class="">
+                <button class="btn-form" type="submit">Add Actor</button>
+            </div>
+            
+        {{ form_end(form) }}
+
+    </section>
+
+
+
+{% endblock %}

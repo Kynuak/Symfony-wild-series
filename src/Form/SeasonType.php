@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Season;
+use App\Entity\Program;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -16,7 +17,7 @@ class SeasonType extends AbstractType
             ->add('year')
             ->add('description')
             ->add('program', null, [
-                'class' => Season::class, 
+                'class' => Program::class, 
                 'choice_label' => 'title'
             ])
         ;
