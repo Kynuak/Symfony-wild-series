@@ -35,8 +35,6 @@ class ProgramFixtures extends Fixture implements DependentFixtureInterface
                 $manager->persist($program);
            
             }
-        
-
 
         $manager->flush();
     }

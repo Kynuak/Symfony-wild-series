@@ -9,6 +9,26 @@
 <h3>Episode {{ episode.number }} : {{ episode.title }}</h3>
 
 <p>{{ episode.synopsis }}</p>
+    {% if app.user %}
+      {{ app.user.email }}
+        <h3>Ajouter un commentaire</h3>
+        {% include 'comment/add_comment.html.twig' %}
 
+        <h3>Liste des commentaires</h3>
+        <ul>
+        {% for comment in comments %}
+            <li>
+                <h5>{{ comment.author.email }}</h5>
+                <p>{{ comment.comment }}</p>
+                <p>Note: {{ comment.rate }}</p>
+            
+            </li>
+        {% endfor %}
+        
+        
+        </ul>
+
+
+    {% endif %}
 
 {% endblock %}
