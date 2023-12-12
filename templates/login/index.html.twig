@@ -6,7 +6,7 @@
     {% if error %}
         <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
-
+    <h1>Connexion</h1>
     <form action="{{ path('app_login') }}" method="post">
         <label for="username">Email:</label>
         <input type="text" id="username" name="_username" value="{{ last_username }}">
@@ -19,4 +19,6 @@
 
         <button class="btn-form" type="submit">login</button>
     </form>
+
+    <a href="{{ path('app_forgot_password_request') }}">Mot de passe oublié</a>
 {% endblock %}

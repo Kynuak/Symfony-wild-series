@@ -12,7 +12,6 @@
     {% if app.user %}
         <h3>Ajouter un commentaire</h3>
         {% include 'comment/add_comment.html.twig' %}
-
         <h3>Liste des commentaires</h3>
         <ul>
         {% for comment in comments %}
@@ -23,15 +22,8 @@
                 {% if (comment.author == app.user or is_granted('ROLE_ADMIN')) %}
                     {% include 'comment/_delete_comment.html.twig' %}
                 {% endif %}
-                
-            
             </li>
         {% endfor %}
-        
-        
         </ul>
-
-
     {% endif %}
-
 {% endblock %}

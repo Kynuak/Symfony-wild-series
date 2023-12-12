@@ -3,6 +3,28 @@
 {% block title %}Wild Series{% endblock %}
 
 {% block body %}
+    <section class="program">
+        {% for program in programs %}
+
+            <div class="card-program">
+                <div class="card-img">
+                    <img src="{{ vich_uploader_asset(program) }}" alt="program.title">
+                </div>
+                <div class="card-body">
+                    <div class="card-title">
+                        <h2>{{ program.title }}</h2>
+                    </div>
+                    <div class="card-content">
+                        <p>{{ program.synopsis|length > 50 ? program.synopsis|slice(0, 100) ~ '...' : program.synopsis }}</p>
+                        
+                    </div>
+                    <div class="card-footer">
+                        <a href="{{ path('program_show', { programSlug: program.slug}) }}">Voir la fiche</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </section>
 
 
 {% endblock %}

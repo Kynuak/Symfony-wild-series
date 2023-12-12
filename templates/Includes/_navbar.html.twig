@@ -14,9 +14,16 @@
       </ul>
     </div>
     {% if app.user %}
-      {{ app.user.email }}
-        <a href="{{ path('app_logout') }}"> Se déconnecter</a>
+      <div>
+          <a href="{{ path('my-profile') }}"> Mon compte</a>
+          <a href="{{ path('app_logout') }}"> Se déconnecter</a>
+      </div>
+
     {% else %}
-        <a href="{{ path('app_login') }}"> Se connecter</a>
+      <div>
+          <a href="{{ path('app_login') }}"> Se connecter</a>
+          <a href="{{ path('app_register') }}"> S'inscrire</a>
+      </div>
+
     {% endif %}
 </nav>
