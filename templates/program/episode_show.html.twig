@@ -10,7 +10,6 @@
 
 <p>{{ episode.synopsis }}</p>
     {% if app.user %}
-      {{ app.user.email }}
         <h3>Ajouter un commentaire</h3>
         {% include 'comment/add_comment.html.twig' %}
 
@@ -18,9 +17,13 @@
         <ul>
         {% for comment in comments %}
             <li>
-                <h5>{{ comment.author.email }}</h5>
+                <h5>{{ comment.author.username }}</h5>
                 <p>{{ comment.comment }}</p>
                 <p>Note: {{ comment.rate }}</p>
+                {% if (comment.author == app.user or is_granted('ROLE_ADMIN')) %}
+                    {% include 'comment/_delete_comment.html.twig' %}
+                {% endif %}
+                
             
             </li>
         {% endfor %}

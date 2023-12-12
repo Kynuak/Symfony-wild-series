@@ -62,6 +62,7 @@ class ProgramController extends AbstractController
         if($form->isSubmitted() && $form->isValid()) {
             $slug = $slugger->slug($program->getTitle());
             $program->setSlug($slug);
+            $program->setOwner($this->getUser());
             $entityManagerInterface->persist($program);
             $entityManagerInterface->flush();
 
@@ -102,6 +103,9 @@ class ProgramController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if($this->getUser() !== $program->getOwner()) {
+                throw $this->createAccessDeniedException("Tu n'est pas le propriétaire de cette série !");
+            }
             $slug = $slugger->slug($program->getTitle());
             $program->setSlug($slug);
             $entityManager->flush();

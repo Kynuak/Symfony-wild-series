@@ -21,7 +21,6 @@ class ProgramFixtures extends Fixture implements DependentFixtureInterface
     {
         $faker = Factory::create();
 
-
             for($i = 0; $i < 50; $i++) {
                 $program = new Program();
                 $programTitle = $faker->sentence();
@@ -30,6 +29,13 @@ class ProgramFixtures extends Fixture implements DependentFixtureInterface
                 $program->setSlug($slug);
                 $program->setSynopsis($faker->paragraph(3, true));
                 $program->setCategory($this->getReference('category_'. rand(0, 14)));
+                if($i < 15) {
+                    $program->setOwner($this->getReference('contributor'));
+                } elseif($i > 16 && $i < 35) {
+                    $program->setOwner($this->getReference('contributor2'));
+                } else {
+                    $program->setOwner($this->getReference('administrator'));
+                }
                 $this->addReference('program_' .$i, $program);
                 
                 $manager->persist($program);

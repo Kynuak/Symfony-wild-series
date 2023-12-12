@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/category', name:'category_')]
 class CategoryController extends AbstractController
@@ -22,7 +23,9 @@ class CategoryController extends AbstractController
         return $this->render('Category/index.html.twig', ['categories' => $categories]);
     }
 
+    
     #[Route('/new', name: 'new')]
+    #[IsGranted('ROLE_ADMIN')]
     public function new(Request $request, EntityManagerInterface $entityManagerInterface): Response
     {
         $category = new Category();

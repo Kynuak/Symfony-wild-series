@@ -22,21 +22,34 @@ class UserFixtures extends Fixture
         // $manager->persist($product);
         $faker = Factory::create();
 
-        for($i = 0; $i < 6; $i++) {
-            $user = new User();
-            $user->setEmail($faker->email());
-            $passwordUser = 'test';
-            $hashedPassword = $this->passwordHasher->hashPassword(
-                $user,
-                $passwordUser
-            );
-            $user->setPassword($hashedPassword);
-            $user->setRoles(['ROLE_CONTRIBUTOR']);
-            $manager->persist($user);
-
-        }
-
+        $user = new User();
+        
+        $user->setEmail('contributor@contributor.fr');
+        $passwordUser = 'contributor';
+        $hashedPassword = $this->passwordHasher->hashPassword(
+            $user,
+            $passwordUser
+        );
+        $user->setPassword($hashedPassword);
+        $user->setRoles(['ROLE_CONTRIBUTOR']);
+        $user->setUsername('Contributor');
+        $manager->persist($user);
         $manager->flush();
+        $this->addReference('contributor', $user);
+
+        $user = new User();
+        $user->setEmail('contributor2@contributor.fr');
+        $passwordUser = 'contributor';
+        $hashedPassword = $this->passwordHasher->hashPassword(
+            $user,
+            $passwordUser
+        );
+        $user->setPassword($hashedPassword);
+        $user->setRoles(['ROLE_CONTRIBUTOR']);
+        $user->setUsername('Contributor2');
+        $manager->persist($user);
+        $manager->flush();
+        $this->addReference('contributor2', $user);
 
         $userAdmin = new User();
         $userAdmin->setEmail('admin@admin.fr');
@@ -47,7 +60,9 @@ class UserFixtures extends Fixture
         );
         $userAdmin->setPassword($hashedPassword);
         $userAdmin->setRoles(['ROLE_ADMIN']);
+        $userAdmin->setUsername('Administrator');
         $manager->persist($userAdmin);
         $manager->flush();
+        $this->addReference('administrator', $userAdmin);
     }
 }
