@@ -8,6 +8,7 @@ use App\Entity\Episode;
 use App\Entity\Program;
 use App\Form\CommentType;
 use App\Form\ProgramType;
+use App\Form\SearchProgramType;
 use App\Repository\CommentRepository;
 use App\Service\ProgramDuration;
 use Symfony\Component\Mime\Email;
@@ -31,17 +32,26 @@ class ProgramController extends AbstractController
     public function __construct(private Security $security){}
 
     #[Route('/', name: 'index')]
-    public function index(ProgramRepository $programRepository, RequestStack $requestStack): Response
+    public function index(
+        ProgramRepository $programRepository, 
+        Request $request,
+        ): Response
     {
-        $session = $requestStack->getSession();
-        if(!$session->has('total')) {
-            $session->set('total', 0);
+
+        $form = $this->createForm(SearchProgramType::class);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+            $search = $form->getData()['search'];
+            $programs = $programRepository->findLikeName($search);
+        } else {
+            $programs = $programRepository->findAll();
         }
-
-        $total = $session->get('total');
-
-        $programs = $programRepository->findAll();
-        return $this->render('program/index.html.twig', ['programs' => $programs]);
+        
+        return $this->render('program/index.html.twig', [
+            'programs' => $programs,
+            'formSearch' => $form
+        ]);
     }
 
 

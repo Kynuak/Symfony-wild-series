@@ -4,6 +4,10 @@
 
 {% block body %}
     <h1 class="title-page">Toutes nos séries </h1>
+    {{ form_start(formSearch) }}
+    {{ form_widget(formSearch) }}
+        <button class="btn-form">Search</button>
+    {{ form_end(formSearch) }}
     <a href="{{ path('program_new') }}">Ajouter une nouvelle série</a>
     {{ app.session.get('total') }}
     <section class="program">

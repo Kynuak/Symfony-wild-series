@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Actor;
 use App\Entity\Program;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -21,28 +22,28 @@ class ProgramRepository extends ServiceEntityRepository
         parent::__construct($registry, Program::class);
     }
 
-//    /**
-//     * @return Program[] Returns an array of Program objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('p.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function findLikeName(string $name)
+    {
+        $queryBuilder = $this->createQueryBuilder('program')
+            ->join('program.actors', 'actor')
+            ->where('program.title LIKE :name')
+            ->orWhere('actor.name LIKE :nameActor')
+            ->setParameter('name' , '%'. $name . '%')
+            ->setParameter('nameActor', '%' . $name. '%')
+            ->orderBy('program.title', 'ASC')
+            ->getQuery();
 
-//    public function findOneBySomeField($value): ?Program
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        return $queryBuilder->getResult();
+    }
+
+    public function findRecentPrograms()
+    {
+        $em = $this->getEntityManager();
+        $query = $em->createQuery('SELECT program, seson FROM App\Entity\Program program
+                                INNER JOIN program.seasons season
+                                WHERE season>years>2010');
+                            
+        return $query->execute();
+
+    }
 }
