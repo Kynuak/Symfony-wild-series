@@ -12,7 +12,7 @@
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
     </head>
-    <body>
+    <body {{ stimulus_controller('theme') }} {{ stimulus_target('theme', 'body') }}>
         <header>
             {% include 'Includes/_navbar.html.twig' %}
         </header>
@@ -27,9 +27,12 @@
             {% block body %}{% endblock %}
             
 
-            
+            <button class="btn-form" {{ stimulus_action('theme', 'toggleDarkMode') }}>Toggle Dark Mode</button>
         </main>
         
+        <aside>
+            {{ component('lastEpisode') }}
+        </aside>
         
     </body>
 </html>

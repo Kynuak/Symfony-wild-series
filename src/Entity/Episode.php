@@ -149,4 +149,10 @@ class Episode
 
         return $this;
     }
+
+    public function getProgram(): ?Program
+    {
+        // Si la relation est définie dans votre entité Season
+        return $this->season ? $this->season->getProgram() : null;
+    }
 }

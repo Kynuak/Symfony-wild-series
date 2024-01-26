@@ -1,0 +1,23 @@
+<div{{ attributes }}>
+    <h3>Derniers épisodes sorties !</h3>
+    <div class="container-last-episodes">
+        {% for lastepisode in this.lastepisodes %}
+        
+            <article class="last-episode">
+                <div class="container-program-episode">
+                    <h4 >
+                        {{ lastepisode.season.program.title }}
+                    </h4>
+                    <h5>
+                        Saison {{ lastepisode.season.number }}
+                    </h5>
+                </div>
+                <div class="description-last-episode">
+                    <h5>Episode {{ lastepisode.number }}</h5>
+                    <h5>{{ lastepisode.title }}</h5>
+                    <h6>{{ lastepisode.duration }} min</h6>
+                </div>
+            </article>
+        {% endfor %}
+    </div>
+</div>
